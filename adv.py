@@ -11,10 +11,10 @@ world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
-map_file = "maps/test_cross.txt"
+# map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -31,11 +31,16 @@ player = Player(world.starting_room)
 visited = {}
 # start with a list/stack to store the current room id
 path = []
+
+# traversal_path = ['n', 'n']
+traversal_path = []
+
+
 # # push the first room
 # rooms_seen.append(player.current_room.id)
 
 # while the dictionary is less than len(graph)
-for i in range(10):
+while len(visited) < len(room_graph):
     # discover what the new id is
     current_room = player.current_room.id
                                     # fill in direction connection for both the previous and current room
@@ -51,30 +56,37 @@ for i in range(10):
 
     # I need to be able to iterate through a <for?> loop of options - exits list
     x = 0
-    for direction in directions:
+    for direction in player.current_room.get_exits():
         # if I find an unfilled available direction
         # if that direction is empty/null/"?"
+        print("--", player.current_room.id, player.current_room.get_exits(), direction)
         if visited[player.current_room.id][direction] == '?':
 
             # go that direction
             # get the room number of the next room    
-            next_room = player.current_room.get_room_in_direction(directions[x]).id
+            print(player.current_room.id, player.current_room.get_exits(), direction)
+            next_room = player.current_room.get_room_in_direction(direction).id
             # fill in the directional table of the current room
-            visited[player.current_room.id][directions[x]] = next_room
+            visited[player.current_room.id][direction] = next_room
 
             # store the room number of the current room as previous room
             previous_room = player.current_room.id
             # add direction to path stack
-            path.append(directions[x])
+            path.append(direction)
+          
+
             # move to the next room
-            player.travel(directions[x])
+            player.travel(direction)
+            # append direction to traversal path
+            traversal_path.append(direction)   
 
             # if next room (now current room) doesn't exist, create a table entry
             if player.current_room.id not in visited:
                 visited[player.current_room.id] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
 
             # fill in the directional table of the current room with the previous room
-            visited[player.current_room.id][compass[directions[x]]] = previous_room
+            visited[player.current_room.id][compass[direction]] = previous_room
+            break
         else:
             x += 1
 
@@ -89,8 +101,11 @@ for i in range(10):
             backtrack = path.pop()
             # look up opposite direction in compass and traverse
             player.travel(compass[backtrack])
+            # append direction to traversal path
+            traversal_path.append(compass[backtrack])
             print(f'ROOM: {player.current_room.id}')
         
+print(visited)
 
         
 
@@ -141,12 +156,6 @@ for i in range(10):
     #     # look up opposite direction in compass and traverse
     #     player.travel(compass[backtrack])
     #     print(f'ROOM: {player.current_room.id}')
-
-
-
-
-# traversal_path = ['n', 'n']
-traversal_path = []
 
 
 # TRAVERSAL TEST - DO NOT MODIFY
