@@ -26,14 +26,40 @@ world.print_rooms()
 player = Player(world.starting_room)
 
 # Fill this out with directions to walk
+# traversal_path = ['n', 'n']
+traversal_path = []
 
 # start with a dictionary to store traversed rooms with directions possible
 visited = {}
 # start with a list/stack to store the current room id
 path = []
 
-# traversal_path = ['n', 'n']
-traversal_path = []
+# while len(visited) < len(room_graph):
+#     current_room = player.current_room.id
+#     if player.current_room.id not in visited:
+#         visited[player.current_room.id] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+#     directions = player.current_room.get_exits()
+#     compass = {'n':'s', 's':'n', 'w':'e', 'e':'w'}
+#     x = 0
+#     x = 0
+#     for direction in player.current_room.get_exits():
+#         if visited[player.current_room.id][direction] == '?':
+#             next_room = player.current_room.get_room_in_direction(direction).id
+#             visited[player.current_room.id][direction] = next_room
+#             previous_room = player.current_room.id
+#             path.append(direction)
+#             player.travel(direction)
+#             traversal_path.append(direction)   
+#             if player.current_room.id not in visited:
+#                 visited[player.current_room.id] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+#             visited[player.current_room.id][compass[direction]] = previous_room
+#             break
+#         else:
+#             x += 1
+#         if x == len(directions):
+#             backtrack = path.pop()
+#             player.travel(compass[backtrack])
+#             traversal_path.append(compass[backtrack])
 
 
 # # push the first room
