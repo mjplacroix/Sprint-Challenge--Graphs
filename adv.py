@@ -49,14 +49,14 @@ for i in range(10):
     x = 0
     print(f'>{player.current_room.id, player.current_room.get_exits()}')
 
-    # if that direction is empty/null/"?"
-    if visited[player.current_room.id][directions[x]] == '?':
-        # if a room in that direction exists
-        if player.current_room.get_room_in_direction(directions[x]):
+    # I need to be able to iterate through a <for?> loop of options - exits list
+    x = 0
+    for direction in directions:
+        # if I find an unfilled available direction
+        # if that direction is empty/null/"?"
+        if visited[player.current_room.id][direction] == '?':
 
-            # # add the current room number to the stack
-            # rooms_seen.append(player.current_room.id)
-
+            # go that direction
             # get the room number of the next room    
             next_room = player.current_room.get_room_in_direction(directions[x]).id
             # fill in the directional table of the current room
@@ -75,23 +75,73 @@ for i in range(10):
 
             # fill in the directional table of the current room with the previous room
             visited[player.current_room.id][compass[directions[x]]] = previous_room
-    else:
-        # else increment the counter to try the next direction in the exit list
-        x += 1   
-        print(x, len(directions))   
+        else:
+            x += 1
 
-    # if all possible exit directions are filled in, 
-    if x == len(directions):
-        # pop the previous direction off the top of the list/stack 
-        backtrack = path.pop()
-        # look up opposite direction in compass and traverse
-        player.travel(compass[backtrack])
-        print(f'ROOM: {player.current_room.id}')
-    
+            # if all possible exit directions have been tried 
 
-        ## this will leave you stuck at the end of a line
-        ## will need to traverse/travel back down a stack until you find a 
-# build a stack of the directions you've gone
+
+        # if I don't find an unfilled available direction, 
+        # pop the previously traveled direction off the path stack and travel the opposite direction via the compass dictionary
+        # break out of the loop and go that way
+        if x == len(directions):
+            # pop the previous direction off the top of the list/stack 
+            backtrack = path.pop()
+            # look up opposite direction in compass and traverse
+            player.travel(compass[backtrack])
+            print(f'ROOM: {player.current_room.id}')
+        
+
+        
+
+
+        
+
+
+
+
+
+""" below is deprecated code I believe """
+
+    # # if that direction is empty/null/"?"
+    # if visited[player.current_room.id][directions[x]] == '?':
+    #     # if a room in that direction exists
+    #     if player.current_room.get_room_in_direction(directions[x]):    ## <- unneccesary if only trying possible exits
+
+    #         # # add the current room number to the stack
+    #         # rooms_seen.append(player.current_room.id)
+
+    #         # get the room number of the next room    
+    #         next_room = player.current_room.get_room_in_direction(directions[x]).id
+    #         # fill in the directional table of the current room
+    #         visited[player.current_room.id][directions[x]] = next_room
+
+    #         # store the room number of the current room as previous room
+    #         previous_room = player.current_room.id
+    #         # add direction to path stack
+    #         path.append(directions[x])
+    #         # move to the next room
+    #         player.travel(directions[x])
+
+    #         # if next room (now current room) doesn't exist, create a table entry
+    #         if player.current_room.id not in visited:
+    #             visited[player.current_room.id] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+
+    #         # fill in the directional table of the current room with the previous room
+    #         visited[player.current_room.id][compass[directions[x]]] = previous_room
+    # else:
+    #     # else increment the counter to try the next direction in the exit list
+    #     x += 1   
+    #     print(x, len(directions), path, visited)   
+
+    # # if all possible exit directions have been tried 
+    # if x == len(directions):
+    #     # pop the previous direction off the top of the list/stack 
+    #     backtrack = path.pop()
+    #     # look up opposite direction in compass and traverse
+    #     player.travel(compass[backtrack])
+    #     print(f'ROOM: {player.current_room.id}')
+
 
 
 
